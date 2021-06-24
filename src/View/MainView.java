@@ -1,13 +1,16 @@
 package View;
 
+import Controller.FiltrirajController;
 import Controller.ObracunController;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import Module.Pohadjac;
+import Module.Database;
+import Module.Akcija;
 import Module.TipAkcije;
 
 public class MainView extends VBox {
@@ -23,6 +26,7 @@ public class MainView extends VBox {
         initElements();
         setElementProperties();
         initListeners();
+        addElementsToScreen();
     }
 
     public static MainView getInstance()
@@ -39,7 +43,7 @@ public class MainView extends VBox {
     private HBox gore;
     private VBox levo;
     private Label polaznici;
-    private ListView<String> lista;
+    private ListView<Akcija> lista;
 
     private VBox desno;
     private Label filterPolaznika;
@@ -62,7 +66,13 @@ public class MainView extends VBox {
     //down
     private VBox dole;
     private Label Akcije;
-    private TableView<Pohadjac> tabela;
+    private TableView<Akcija> tabela;
+
+    private TableColumn<Akcija, String> tcDatum;
+    private TableColumn<Akcija, String> tcIme;
+    private TableColumn<Akcija, String> tcPrezime;
+    private TableColumn<Akcija, String> tcAkcija;
+    private TableColumn<Akcija, Double> tcIznos;
 
     private void initElements()
     {
@@ -87,6 +97,7 @@ public class MainView extends VBox {
         obracun = new Button("Obracun");
         dva = new VBox();
         brojAkcija = new TextField();
+        brojAkcija.setPromptText("Unesite broj akcija");
         filtriraj = new Button("Filtriraj");
         tri = new VBox();
         tipAkcije = new ComboBox<>();
@@ -113,7 +124,19 @@ public class MainView extends VBox {
         Akcije = new Label("Akcije");
         tabela = new TableView<>();
 
+        tcDatum = new TableColumn<>("Datum");
+        tcDatum.setCellValueFactory(new PropertyValueFactory<>("datum"));
+        tcIme = new TableColumn<>("Ime");
+        tcIme.setCellValueFactory(new PropertyValueFactory<>("ime"));
+        tcPrezime = new TableColumn<>("Prezime");
+        tcPrezime.setCellValueFactory(new PropertyValueFactory<>("prezime"));
+        tcAkcija = new TableColumn<>("Akcija");
+        tcAkcija.setCellValueFactory(new PropertyValueFactory<>("tipAkcije"));
+        tcIznos = new TableColumn<>("Iznos");
+        tcIznos.setCellValueFactory(new PropertyValueFactory<>("cena"));
+
         //add
+        tabela.getColumns().addAll(tcDatum, tcIme, tcPrezime, tcAkcija, tcIznos);
         dole.getChildren().addAll(Akcije, tabela);
         gore.getChildren().addAll(levo, desno);
 
@@ -143,6 +166,29 @@ public class MainView extends VBox {
 
     private void initListeners()
     {
+        filtriraj.setOnAction(new FiltrirajController());
         obracun.setOnAction(new ObracunController());
+    }
+
+    private void addElementsToScreen()
+    {
+        lista.getItems().addAll(Database.getInstance().getPohadjaci());
+        tabela.getItems().addAll(Database.getInstance().getAkcije());
+    }
+
+    public ListView<Akcija> getLista() {
+        return lista;
+    }
+
+    public TextField getInputImena() {
+        return inputImena;
+    }
+
+    public ComboBox<String> getVeceManjeJednako() {
+        return veceManjeJednako;
+    }
+
+    public TextField getBrojAkcija() {
+        return brojAkcija;
     }
 }
