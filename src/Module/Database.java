@@ -2,10 +2,7 @@ package Module;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Database {
     private static Database instance;
@@ -21,6 +18,7 @@ public class Database {
     private Database()
     {
         loadActions();
+        removeDuplicatesInList();
     }
 
     public static Database getInstance()
@@ -97,6 +95,24 @@ public class Database {
         Collections.sort(pohadjaci);
     }
 
+    void removeDuplicatesInList()
+    {
+        Iterator<Akcija> iterator = pohadjaci.iterator();
+        Iterator<Akcija> iteratorSledeci = pohadjaci.iterator();
+
+        while (iterator.hasNext())
+        {
+            iteratorSledeci = iterator;
+            while(iteratorSledeci.hasNext())
+            {
+                if (iterator.equals(iteratorSledeci.next()))
+                {
+                    iteratorSledeci.remove();
+                }
+            }
+
+        }
+    }
 
     public List<Akcija> getAkcije() {
         return akcije;

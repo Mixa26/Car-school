@@ -1,6 +1,8 @@
 package Module;
 
 import java.util.Date;
+import java.util.Objects;
+
 import Module.TipAkcije;
 
 public class Akcija implements Comparable<Akcija>{

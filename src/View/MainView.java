@@ -2,6 +2,7 @@ package View;
 
 import Controller.FiltrirajController;
 import Controller.ObracunController;
+import Controller.ResetujController;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -168,6 +169,7 @@ public class MainView extends VBox {
     {
         filtriraj.setOnAction(new FiltrirajController());
         obracun.setOnAction(new ObracunController());
+        resetuj.setOnAction(new ResetujController());
     }
 
     private void addElementsToScreen()
@@ -190,5 +192,9 @@ public class MainView extends VBox {
 
     public TextField getBrojAkcija() {
         return brojAkcija;
+    }
+
+    public ComboBox<TipAkcije> getTipAkcije() {
+        return tipAkcije;
     }
 }
